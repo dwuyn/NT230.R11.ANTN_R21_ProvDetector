@@ -18,7 +18,7 @@ NDSS 2020 (DOI 10.14722/ndss.2020.24167).
 - [x] T07 baseline rule / whitelist / anomaly-score
 - [x] T08 doc2vec PV-DM + LOF + cross-check ProvNinja
 - [x] T09 protocol + leakage check
-- [x] T10 chạy in-dataset WS12/W10 + cross-dataset
+- [x] T10 chạy in-dataset WS12/W10 + cross-dataset + 3-seed variance
 - [x] T11 ablation một phần: random paths, detector LOF/OCSVM/IF/RobustCov, K=5/20 (noise + K=50 chưa chạy)
 - [x] T12 error analysis sơ bộ
 - [x] T13 overhead (runtime từng run)
@@ -80,10 +80,12 @@ flowchart LR
 | W10 → WS12 | 0.603 | 0.725 | 0.564 | 0.209 |
 | WS12 → W10 | 0.675 (FPR 0.96) | 0.572 | 0.667 (FPR 1.0) | 0.488 |
 
-Đọc đúng: trên trace mô phỏng, frequency-only **không kém** ProvDetector
-in-dataset; embedding chỉ chuyển tốt hơn ở chiều W10→WS12. Random-path ablation
-cũng không giảm F1 vì nhãn là chính attack process (xem `ablation.md`). Đây là
-các kết quả âm tính trung thực, không phải tái lập F1=0.974.
+Đọc đúng: qua 3 seed, ProvDetector F1 = **0.928 ± 0.021**, frequency-only
+**0.925 ± 0.017** — chênh lệch nhỏ hơn dao động seed, nên **không thể kết luận
+phương pháp nào hơn** in-dataset. Embedding chỉ chuyển tốt hơn ở chiều
+W10→WS12. Random-path ablation cũng không giảm F1 vì nhãn là chính attack
+process (xem `ablation.md`, `seed-variance.md`). Đây là kết quả âm tính trung
+thực, không phải tái lập F1=0.974.
 
 - Bảng đầy đủ: `experiments/results/main-table.md`, `ablation.md`.
 - Cross-check ProvNinja: `experiments/results/provninja-check.json`.
@@ -107,7 +109,8 @@ Ubuntu đã tải nhưng chưa parse; không có claim Linux.
 - `docs/data-card.md`, `docs/checksums.md` — hạng mục 3.
 - `experiments/protocol.md` — protocol khóa.
 - `docs/limitations.md`, `docs/error-analysis.md`, `experiments/results/error-analysis-*.md` — hạng mục 4.
-- `experiments/results/main-table.md`, `ablation.md`, `confusion-matrices.md`, `path-sanity.md` — bảng kết quả.
+- `experiments/results/main-table.md`, `ablation.md`, `confusion-matrices.md`, `seed-variance.md`, `signal-noise.md`, `path-sanity.md` — bảng kết quả.
+- `docs/requirements-audit.md` — đối chiếu đề bài/rubric và danh sách gap.
 - `docs/venue-note.md` — NDSS 2020 vs đề "NDSS 2025".
 
 ## An toàn

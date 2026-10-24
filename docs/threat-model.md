@@ -44,6 +44,26 @@ ProvDetector chỉ dùng 3 entity và 5 quan hệ [1, Table I]:
 - Hệ quả: một số tấn công memory-only là **missing-telemetry** — không thể
   phát hiện về nguyên tắc bởi pipeline này.
 
+## 2bis. Concept map
+
+```mermaid
+flowchart TD
+    SM[Stealthy malware<br/>impersonate/abuse tiến trình tin cậy] -->|injection| T1[Memory injection<br/>hollowing / DLL / thread]
+    SM -->|script/fileless| T2[Office macro, DDE,<br/>PowerShell]
+    SM -->|LOLBin| T3[certutil, rundll32,<br/>mshta, wmic]
+    SM -->|né| AV[File AV / whitelist<br/>không thấy payload]
+
+    SM -->|vẫn chạm| OS[OS kernel / ETW]
+    OS --> PG[Provenance graph<br/>process – file – socket]
+    PG --> P[Process bị chiếm<br/>graph phần lớn benign]
+    P -->|vài path hiếm| CP[Causal path hiếm<br/>marginal deviation]
+    CP --> DET[ProvDetector<br/>regularity + doc2vec + LOF]
+    DET --> ALERT[Cảnh báo process bị chiếm]
+
+    PG -->|KHÔNG thấy| MISS[Memory, registry,<br/>command-line args, DNS]
+    MISS --> LIM[Giới hạn & FP<br/>admin script, updater, macro hợp lệ]
+```
+
 ## 3. TTP → provenance kỳ vọng
 
 | TTP (ATT&CK) | Chuỗi kỳ vọng | Vì sao phân biệt được | FP điển hình |

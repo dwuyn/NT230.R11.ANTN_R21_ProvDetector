@@ -1,0 +1,26 @@
+[
+  {
+    "file": "W10_anomaly_events.parquet",
+    "events": 1876355,
+    "duplicates": 1347,
+    "rate": 0.0007178812111780554
+  },
+  {
+    "file": "W10_benign_events.parquet",
+    "events": 6015438,
+    "duplicates": 6525,
+    "rate": 0.001084709043630738
+  },
+  {
+    "file": "WS12_anomaly_events.parquet",
+    "events": 1083898,
+    "duplicates": 11105,
+    "rate": 0.01024542899793154
+  },
+  {
+    "file": "WS12_benign_events.parquet",
+    "events": 7191156,
+    "duplicates": 4737,
+    "rate": 0.000658725801526208
+  }
+]

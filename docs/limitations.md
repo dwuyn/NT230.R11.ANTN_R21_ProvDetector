@@ -50,9 +50,11 @@
   frequency-only baseline balanced F1 0.854 / AUC 0.863, anomaly-score
   F1 0.850 / AUC 0.889. Pure regularity is at least as strong as the embedding
   on this trace.
-- WS12→WS12: ProvDetector balanced F1 0.905, AUROC 0.943; frequency-only
-  F1 0.935 / AUC 0.950. The same pattern: the simulated attack processes are
-  rare by construction, so a frequency baseline is hard to beat in-dataset.
+- WS12→WS12 over 3 seeds: ProvDetector F1 0.928 ± 0.021, AUROC 0.947 ± 0.007;
+  frequency-only F1 0.925 ± 0.017, AUROC 0.950 ± 0.001. The difference is
+  smaller than the seed spread, so neither method can be declared better
+  in-dataset. The simulated attack processes are rare by construction, which
+  makes frequency a strong baseline.
 - Cross-dataset W10→WS12 flips the comparison: ProvDetector AUC 0.725,
   frequency-only AUC 0.209 (balanced F1 0.564 at 95% FPR). WS12→W10:
   ProvDetector AUC 0.571, frequency-only AUC 0.488, anomaly-score AUC 0.739.

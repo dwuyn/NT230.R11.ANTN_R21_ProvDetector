@@ -4,6 +4,27 @@ Method reproduction on PKU-ASAL Simulated-Data; **not** a reproduction of the pa
 
 > `frequency_score` is the continuous frequency-only baseline used because the
 > binary whitelist degenerates on file-heavy traces (see `docs/limitations.md`).
+> Seed variance (3 seeds, WS12): `seed-variance.md` — ProvDetector F1
+> 0.928 ± 0.021, frequency-only 0.925 ± 0.017.
+
+## Reference numbers from the paper (different dataset — not comparable)
+
+| Paper result (enterprise private data) | Value |
+|---|---|
+| Path-level P / R / F1 | 0.959 / 0.991 / 0.974 |
+| Graph-level t=3 P / R / F1 | 0.957 / 1.000 / 0.978 |
+| Blacklist baseline F1 | 0.07 |
+| Whitelist baseline F1 at p=3% | 0.78 |
+| Anomaly-score baseline F1 | 0.50 |
+| graph2vec baseline F1 | 0.601 |
+| PathNodesAveraging F1 | 0.924 |
+| OCSVM / IsolationForest / RobustCovariance F1 | 0.739 / 0.627 / 0.558 |
+
+The paper's benign/malicious traces are not public, so the table below is a
+**method reproduction**, not a numeric reproduction. Our dataset is simulated,
+smaller, and has a different label granularity (attack process vs victim
+program).
+
 
 
 ## Train `WS12` → test `WS12` (seed 20261025, K=20, t=3)

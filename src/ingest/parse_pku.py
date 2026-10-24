@@ -155,7 +155,7 @@ class NodeTable:
 
 def _ts(record: dict) -> int:
     try:
-        return int(round(float(record.get("MSec", 0)) * 1000))
+        return round(float(record.get("MSec", 0)) * 1000)
     except (TypeError, ValueError):
         return 0
 

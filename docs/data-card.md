@@ -67,6 +67,22 @@ remote `ip:port`.
 kept as edges. Implicit instances capture processes whose events precede the
 first start record.
 
+### Duplicate audit
+
+Exact duplicate rows after normalisation (`experiments/duplicate_check.py`,
+`experiments/results/duplicate-check.json`):
+
+| Table | Events | Duplicates | Rate |
+|---|---|---|---|
+| WS12 benign | 7,191,156 | 4,737 | 0.066% |
+| WS12 anomaly | 1,083,898 | 11,105 | 1.025% |
+| W10 benign | 6,015,438 | 6,525 | 0.108% |
+| W10 anomaly | 1,876,355 | 1,347 | 0.072% |
+
+Duplicates are repeated identical `(ts, instance, src, dst, rel)` rows. They are
+retained (not deduplicated) because repeated reads are real behaviour; the rate
+is low enough not to explain the results.
+
 ## 6. Splits
 
 - Unit: process instance; all paths of an instance stay on one side.
