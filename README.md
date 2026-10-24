@@ -18,11 +18,11 @@ NDSS 2020 (DOI 10.14722/ndss.2020.24167).
 - [x] T07 baseline rule / whitelist / anomaly-score
 - [x] T08 doc2vec PV-DM + LOF + cross-check ProvNinja
 - [x] T09 protocol + leakage check
-- [x] T10 chạy in-dataset WS12/W10 + cross-dataset + 3-seed variance
+- [x] T10 chạy in-dataset WS12/W10 + cross-dataset + 3-seed variance + temporal/noise/K ablation
 - [x] T11 ablation một phần: random paths, detector LOF/OCSVM/IF/RobustCov, K=5/20 (noise + K=50 chưa chạy)
 - [x] T12 error analysis sơ bộ
 - [x] T13 overhead (runtime từng run)
-- [ ] T14 case study viết đầy đủ
+- [x] T14 case study (`docs/case-studies.md`, 4 case)
 - [x] T15 README/env/checksum/vm-notes
 - [ ] T16 báo cáo + slide
 
@@ -32,7 +32,8 @@ NDSS 2020 (DOI 10.14722/ndss.2020.24167).
 make setup          # uv venv 3.12 + pip install -r requirements.txt
 make env            # in phiên bản, kiểm tra pin
 make test           # 8 unit test
-make ingest         # parse 4 file JSONL -> data/clean/*.parquet
+make ingest         # parse 4 Windows JSONL -> data/clean/*.parquet
+make ubuntu         # parse Ubuntu Sysdig (10.5 GB, ~4 phút)
 make ws12           # experiment WS12 -> WS12
 make w10            # experiment W10  -> W10
 make cross          # W10 -> WS12 và WS12 -> W10
@@ -87,7 +88,8 @@ W10→WS12. Random-path ablation cũng không giảm F1 vì nhãn là chính att
 process (xem `ablation.md`, `seed-variance.md`). Đây là kết quả âm tính trung
 thực, không phải tái lập F1=0.974.
 
-- Bảng đầy đủ: `experiments/results/main-table.md`, `ablation.md`.
+- Bảng đầy đủ: `experiments/results/main-table.md`, `ablation.md`,
+  `robustness.md` (temporal/noise/K), `ubuntu.md` (heuristic-label Linux).
 - Cross-check ProvNinja: `experiments/results/provninja-check.json`.
 - Error analysis: `docs/error-analysis.md`.
 
@@ -97,9 +99,10 @@ thực, không phải tái lập F1=0.974.
 |---|---|---|---|
 | WS12 | 5,033 inst / 7.19M edges | 3,180 / 1.08M | 43 |
 | W10 | 6,201 / 6.02M | 2,472 / 1.88M | 136 |
+| Ubuntu (Sysdig, heuristic labels) | 69,300 / 9.0M | 9,541 / 1.28M | 19 |
 
 Xem `docs/data-card.md`, checksum `data/manifest.csv`.
-Ubuntu đã tải nhưng chưa parse; không có claim Linux.
+Ubuntu đã parse với nhãn heuristic từ annotation gốc; chưa dùng cho metric chính.
 
 ## Tài liệu
 
@@ -109,7 +112,7 @@ Ubuntu đã tải nhưng chưa parse; không có claim Linux.
 - `docs/data-card.md`, `docs/checksums.md` — hạng mục 3.
 - `experiments/protocol.md` — protocol khóa.
 - `docs/limitations.md`, `docs/error-analysis.md`, `experiments/results/error-analysis-*.md` — hạng mục 4.
-- `experiments/results/main-table.md`, `ablation.md`, `confusion-matrices.md`, `seed-variance.md`, `signal-noise.md`, `path-sanity.md` — bảng kết quả.
+- `experiments/results/main-table.md`, `ablation.md`, `robustness.md`, `confusion-matrices.md`, `seed-variance.md`, `signal-noise.md`, `path-sanity.md` — bảng kết quả.
 - `docs/requirements-audit.md` — đối chiếu đề bài/rubric và danh sách gap.
 - `docs/venue-note.md` — NDSS 2020 vs đề "NDSS 2025".
 

@@ -21,7 +21,7 @@ lặp lại, baseline, kết quả detection/overhead, case study trace, đánh 
 | So sánh lineage | `src/graph` family + case study chain `cmd→agent→powershell` | ✅ |
 | So sánh tần suất | `FrequencyDB`, `frequency_score`, whitelist | ✅ |
 | So sánh chuỗi hoạt động | top-K causal path + doc2vec | ✅ |
-| Mức nhiễu | `experiments/results/signal-noise.md` (common-edge fraction) | ✅ phân tích; chưa có noise-injection ablation |
+| Mức nhiễu | `experiments/results/signal-noise.md` + `robustness.md` (noise 25–90%) | ✅ |
 | Mã **thu thập** provenance | Chỉ có parser/chuẩn hóa trace công bố; **không có collector Sysmon/ETW** | ⚠️ ingest-first, đã ghi rõ |
 | Schema | `src/ingest/schema.py`, `docs/data-card.md` | ✅ |
 | Kịch bản lặp lại | `experiments/protocol.md`, `Makefile`, `scripts/ingest_all.sh`, seed | ✅ |
@@ -52,26 +52,30 @@ lặp lại, baseline, kết quả detection/overhead, case study trace, đánh 
 - Có: pipeline đầy đủ, config, seed, env lock, protocol, leakage check, 4 cấu
   hình, baseline, ablation random/detector/K, bảng so sánh paper (ghi rõ khác
   dataset).
-- Thiếu: K=50, noise injection; chưa có notebook (thay bằng script + JSON log).
+- Đã có K=5/20/50, noise 25–90%, temporal; thiếu notebook (thay bằng script +
+  JSON log).
 - Đã có 3-seed variance (`experiments/results/seed-variance.md`): ProvDetector
   F1 0.928±0.021, frequency 0.925±0.017.
-- Kết luận: **Đạt**; "khá/giỏi" gần đủ, còn ablation noise/K=50.
+- Kết luận: **Đạt**; "khá/giỏi" đã đủ về ablation/seed.
 
 ### HM3 — Dataset và chất lượng dữ liệu (2.0)
 
 - Có: manifest + SHA-256, data card, schema, label guide, duplicate audit,
   leakage control, cross-dataset split, license/ethics.
-- Thiếu: không đóng góp dataset mới (đề cho phép optional); **temporal split**
-  chưa làm (chỉ cross-dataset); Ubuntu chưa parse.
-- Kết luận: **Đạt**; temporal split là gap rõ.
+- Đã có temporal split WS12 (`robustness.md`) và parse Ubuntu (nhãn heuristic
+  từ annotation, 19 instance). Không đóng góp dataset mới (optional).
+- Đã có metric Ubuntu heuristic (`experiments/results/ubuntu.md`): Prov F1
+  0.174, frequency 0.625, anomaly-score 0.686; 19 positive.
+- Thiếu: temporal cho W10 (MSec không đơn điệu).
+- Kết luận: **Đạt**; temporal W10 là gap còn lại.
 
 ### HM4 — Thực nghiệm, phân tích, phản biện (2.5)
 
 - Có: P/R/F1/FPR, confusion matrix, error taxonomy, FP/FN cụ thể, limitations,
   threats-to-validity, cross-dataset, case study, signal/noise analysis.
-- Đã có seed variance (3 seed) và cross-dataset; thiếu temporal evaluation và
-  case study chưa đưa hết vào báo cáo.
-- Kết luận: **Đạt**; "khá/giỏi" còn temporal + báo cáo.
+- Đã có seed variance, temporal, noise, cross-dataset, case study. Thiếu CI 95%
+  (chỉ std mẫu n=3) và báo cáo tổng hợp.
+- Kết luận: **Đạt**; "khá/giỏi" còn CI và báo cáo.
 
 ### HM5 — Tái lập, đạo đức, trình bày (0.5)
 
@@ -97,7 +101,7 @@ lặp lại, baseline, kết quả detection/overhead, case study trace, đánh 
 1. `docs/report.md` theo đúng 5 hạng mục + bảng cross-ref artifact.
 2. `slides/` 12–15 slide + demo.
 3. Container (Dockerfile) hoặc hướng dẫn venv đủ rõ; đã có venv.
-4. (Khuyến nghị) temporal split, noise injection, K=50, parse Ubuntu.
+4. (Khuyến nghị) temporal cho W10, CI 95%.
 
 ## 5. Kết luận
 

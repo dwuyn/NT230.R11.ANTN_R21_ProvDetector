@@ -28,16 +28,28 @@ from src.select.paths import SelectedPath, sample_paths, select_paths
 from src.util.metrics import binary_metrics
 
 
-def _split(instances: list[int], rng: np.random.Generator, train: float, val: float) -> dict[str, list[int]]:
-    shuffled = list(instances)
-    rng.shuffle(shuffled)
-    n = len(shuffled)
+def _split(
+    instances: list[int],
+    rng: np.random.Generator,
+    train: float,
+    val: float,
+    trace: Trace | None = None,
+    mode: str = "random",
+) -> dict[str, list[int]]:
+    if mode == "temporal":
+        if trace is None:
+            raise ValueError("temporal split requires the trace")
+        ordered = sorted(instances, key=lambda instance: int(trace.instances.loc[instance, "start"]))
+    else:
+        ordered = list(instances)
+        rng.shuffle(ordered)
+    n = len(ordered)
     n_train = int(n * train)
     n_val = int(n * val)
     return {
-        "train": shuffled[:n_train],
-        "val": shuffled[n_train : n_train + n_val],
-        "test": shuffled[n_train + n_val :],
+        "train": ordered[:n_train],
+        "val": ordered[n_train : n_train + n_val],
+        "test": ordered[n_train + n_val :],
     }
 
 
@@ -71,6 +83,44 @@ def _paths_with_cache(
         with cache_path.open("wb") as handle:
             pickle.dump(result, handle, protocol=pickle.HIGHEST_PROTOCOL)
     return result
+
+
+def _inject_noise(
+    anomaly_paths: dict[int, list[SelectedPath]],
+    benign_pool: list[SelectedPath],
+    noise: float,
+    rng: np.random.Generator,
+) -> dict[int, list[SelectedPath]]:
+    """Replace a fraction of each malicious instance's paths with benign paths.
+
+    Replacing (rather than appending) is what makes the experiment meaningful:
+    the graph-level rule counts outlier paths, so appending benign paths could
+    never reduce recall.
+    """
+    if noise <= 0:
+        return anomaly_paths
+    if not benign_pool:
+        raise RuntimeError("noise requested but benign path pool is empty")
+    noisy = {}
+    for instance, paths in anomaly_paths.items():
+        if not paths or paths[0].label != 1:
+            noisy[instance] = paths
+            continue
+        total = len(paths)
+        keep = max(1, round((1.0 - noise) * total))
+        chosen = [benign_pool[int(rng.integers(0, len(benign_pool)))] for _ in range(total - keep)]
+        noisy[instance] = list(paths[:keep]) + [
+            SelectedPath(
+                instance=instance,
+                label=1,
+                log_rarity=path.log_rarity,
+                nodes=path.nodes,
+                edges=path.edges,
+                tokens=path.tokens,
+            )
+            for path in chosen
+        ]
+    return noisy
 
 
 def _flatten(paths_by_instance: dict[int, list[SelectedPath]]) -> tuple[list[list[str]], list[int], list[int]]:
@@ -111,6 +161,8 @@ def run(
     cache_dir: Path,
     path_mode: str = "rare",
     detector_kind: str = "lof",
+    split_mode: str = "random",
+    noise: float = 0.0,
 ) -> dict:
     started = time.perf_counter()
     data_dir = Path(config["paths"]["clean"])
@@ -120,7 +172,7 @@ def run(
     rng = np.random.default_rng(seed)
 
     train_ids = [i for i in train_trace.instance_ids if len(train_trace.own_events(i).get("ts", []))]
-    split = _split(train_ids, rng, config["split"]["train_ratio"], 0.15)
+    split = _split(train_ids, rng, config["split"]["train_ratio"], 0.15, trace=train_trace, mode=split_mode)
     if train_dataset == test_dataset:
         benign_test_ids = split["test"]
     else:
@@ -130,7 +182,7 @@ def run(
     anomaly_ids = [i for i in test_anomaly.instance_ids if len(test_anomaly.own_events(i).get("ts", []))]
     db = FrequencyDB.build(train_trace, split["train"])
 
-    tag = f"{train_dataset}_{test_dataset}_k{k}_L{max_len}_{path_mode}_{detector_kind}_seed{seed}"
+    tag = f"{train_dataset}_{test_dataset}_k{k}_L{max_len}_{path_mode}_{detector_kind}_{split_mode}_noise{int(noise*100)}_seed{seed}"
     train_paths = _paths_with_cache(
         train_trace, split["train"], db, k, max_len, cache_dir / f"{tag}_train.pkl", "train paths",
         mode=path_mode, seed=seed,
@@ -147,6 +199,11 @@ def run(
         test_anomaly, anomaly_ids, db, k, max_len, cache_dir / f"{tag}_anomaly.pkl", "anomaly paths",
         mode=path_mode, seed=seed,
     )
+    if noise > 0:
+        benign_pool = [path for paths in train_paths.values() for path in paths if path.label == 0]
+        # Separate RNG so noise sampling does not change the balanced test sample.
+        noise_rng = np.random.default_rng(seed + 1_000_003)
+        anomaly_paths = _inject_noise(anomaly_paths, benign_pool, noise, noise_rng)
     # Instance ids are local to each trace (both start at 0).  Namespace the
     # anomaly ids so benign and malicious instances never collide.
     offset = 1_000_000
@@ -320,6 +377,8 @@ def run(
             "max_len": max_len,
             "path_mode": path_mode,
             "detector": detector_kind,
+            "split_mode": split_mode,
+            "noise": noise,
             "threshold_quantile": threshold_quantile,
             "calibrated_val_fpr": calibrated_fpr,
             "primary_t": primary_t,
@@ -398,6 +457,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", default="experiments/results")
     parser.add_argument("--path-mode", choices=["rare", "random"], default="rare")
     parser.add_argument("--detector", choices=["lof", "ocsvm", "iforest", "robustcov"], default="lof")
+    parser.add_argument("--split", choices=["random", "temporal"], default="random")
+    parser.add_argument("--noise", type=float, default=0.0, help="fraction of benign paths added to malicious instances")
     args = parser.parse_args(argv)
     config = yaml.safe_load(Path(args.config).read_text())
     results = run(
@@ -411,6 +472,8 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.out) / "cache",
         path_mode=args.path_mode,
         detector_kind=args.detector,
+        split_mode=args.split,
+        noise=args.noise,
     )
     print(json.dumps({k: results[k] for k in ("config", "coverage", "path_level", "runtime_seconds")}, indent=2))
     print(json.dumps(results["methods"], indent=2))

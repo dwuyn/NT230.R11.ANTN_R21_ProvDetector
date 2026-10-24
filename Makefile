@@ -22,6 +22,9 @@ ws12:
 w10:
 	$(PY) -m src.experiment --train W10 --test W10
 
+ubuntu:
+	bash scripts/ingest_ubuntu.sh
+
 cross:
 	$(PY) -m src.experiment --train W10 --test WS12
 	$(PY) -m src.experiment --train WS12 --test W10

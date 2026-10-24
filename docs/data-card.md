@@ -13,7 +13,7 @@
 | License | Research-only MIT (see repo `LICENSE`) — coursework/research only, no commercial use |
 | Downloaded | 2026-10-25 via Git LFS (`SimulatedW10.zip` 133,716,973 B; `SimulatedWS12.zip` 86,679,853 B; `SimulatedUbuntu.zip` 368,736,464 B) |
 | Checksums | SHA-256 in `data/manifest.csv` (outer archives, inner archives, extracted JSON) |
-| Used in this run | **WS12** and **W10** (Windows ETW). Ubuntu downloaded but not parsed (10.5 GB JSON; out of scope for the current run) |
+| Used in this run | **WS12**, **W10** (Windows ETW) and **Ubuntu** (Sysdig, heuristic labels) |
 | Cross-check | ProvNinja `sample-enterprise-data` (BSD-3-Clause, 14 MB) copied to `data/raw-provninja/` |
 
 ## 2. Collection environment
@@ -21,8 +21,9 @@
 - Windows Server 2012 and Windows 10 virtual machines instrumented with
   Windows ETW kernel providers (process/file/network events), exported as
   JSON lines.
-- Ubuntu 20.04 trace uses Sysdig (`evt.type`, `proc.cmdline`, `fd.name`); not
-  ingested in this iteration.
+- Ubuntu 20.04 trace uses Sysdig (`evt.type`, `proc.cmdline`, `fd.name`), no
+  `proc.pid`; parsed with instance = `(cmdline, 60 s bucket)` and labels from
+  the published annotations (UTC+8).
 - The published data contains **traces only**, no malware binaries. Nothing in
   this repo executes malware.
 
@@ -46,8 +47,14 @@ remote `ip:port`.
 
 ## 4. Labels
 
-- Ground truth is the `is_warn` field on `Process/Start` (`True` for attack
-  processes in `anomaly.json`; absent/False elsewhere).
+- Windows ground truth is the `is_warn` field on `Process/Start` (`True` for
+  attack processes in `anomaly.json`; absent/False elsewhere).
+- Ubuntu has no `proc.pid` and all `is_warn` values are False. Labels are
+  reconstructed from `attack_annotation/A*.txt` (UTC+8) by matching the
+  annotated command tokens inside the annotated time window. Instance =
+  `(proc.cmdline, 60-second bucket)`. This is a **heuristic** label; 19
+  instances matched (sandcat, sqltool, base64/powershell, rm). It is not used
+  for the main Windows results.
 - Every event owned by a labelled process inherits the label.
 - `anomaly.json` also contains non-attack processes (label 0), so it is a
   realistic mixed test stream, not an all-malicious file.
@@ -62,6 +69,8 @@ remote `ip:port`.
 | WS12 anomaly | 1,087,311 | 1,083,898 | 3,139 | 43 | 3,180 | 10,006 |
 | W10 benign | 6,022,142 | 6,015,438 | 6,021 | 0 | 6,201 | 48,379 |
 | W10 anomaly | 1,878,778 | 1,876,355 | 2,365 | 136 | 2,472 | 16,693 |
+| Ubuntu benign | 15,342,095 | 8,999,638 | n/a (Sysdig) | 0 | 69,300 | 76,096 |
+| Ubuntu anomaly | 3,832,342 | 1,278,792 | n/a (Sysdig) | 19 (heuristic) | 9,541 | 13,423 |
 
 `Process/Stop` records (4,991 / 3,134 / 6,011 / 2,261) are used for lifetimes, not
 kept as edges. Implicit instances capture processes whose events precede the
@@ -109,7 +118,8 @@ is low enough not to explain the results.
   paper's enterprise/Cuckoo setup.
 - **Class imbalance**: 43/3,180 and 136/2,472 anomaly-trace positives. Report
   P/R/F1 plus FPR and a balanced test sample; accuracy is never used.
-- **Ubuntu** trace not ingested; no Linux claim is made.
+- **Ubuntu** labels are heuristic (19 instances matched); the Linux metric is
+  indicative only, not part of the main claim.
 - **No new malware** was downloaded or executed.
 
 ## 8. Ethics / privacy

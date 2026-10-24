@@ -134,13 +134,12 @@ class NodeTable:
             self.types.append(int(node_type))
         return node_id
 
+    def process(self, instance: int, name: str) -> int:
+        return self._get(("process", instance), NodeType.PROCESS, f"P:{normalize_name(name)}")
+
     def process_instance(self, interval: Interval) -> int:
         if interval.node < 0:
-            interval.node = self._get(
-                ("process", interval.instance),
-                NodeType.PROCESS,
-                f"P:{normalize_name(interval.name)}",
-            )
+            interval.node = self.process(interval.instance, interval.name)
         return interval.node
 
     def orphan_process(self, pid: int, name: str) -> int:

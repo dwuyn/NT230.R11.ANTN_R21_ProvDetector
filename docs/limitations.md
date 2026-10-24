@@ -11,7 +11,8 @@
   evaluate those labelled attack processes. A victim-level variant is future
   work; it would be substantially harder because the victim graph is mostly
   benign.
-- Ubuntu (10.5 GB JSON) was downloaded but not ingested; no Linux claim.
+- Ubuntu (10.5 GB JSON) is ingested with heuristic labels from annotations;
+  no `proc.pid`, so Linux metrics are indicative only.
 - WS12 and W10 are single-host, short-lived captures. `H(e)` (number of hosts
   containing an edge) degenerates to one host, so the regularity score uses
   benign-instance frequency instead of host frequency. This is a documented
@@ -50,6 +51,14 @@
   frequency-only baseline balanced F1 0.854 / AUC 0.863, anomaly-score
   F1 0.850 / AUC 0.889. Pure regularity is at least as strong as the embedding
   on this trace.
+- Temporal split (WS12): ProvDetector F1 0.905 / AUROC 0.942 versus random
+  0.905 / 0.943; frequency 0.935. The capture has no measurable drift at this
+  granularity, so temporal does not change the conclusion.
+- Noise injection (path replacement): recall 1.000 → 0.791 → 0.767 → 0.535 at
+  25/50/75/90% noise; FPR fixed at 0.186. The embedding detector degrades as
+  expected once attack paths are diluted.
+- K ablation: K=5 F1 0.956/AUROC 0.953; K=20 0.905/0.943; K=50 0.925/0.905.
+  More paths help recall but add noisy candidates and lower ranking quality.
 - WS12→WS12 over 3 seeds: ProvDetector F1 0.928 ± 0.021, AUROC 0.947 ± 0.007;
   frequency-only F1 0.925 ± 0.017, AUROC 0.950 ± 0.001. The difference is
   smaller than the seed spread, so neither method can be declared better

@@ -1,0 +1,265 @@
+{
+  "config": {
+    "train_dataset": "WS12",
+    "test_dataset": "WS12",
+    "seed": 20261025,
+    "k": 20,
+    "max_len": 5,
+    "path_mode": "rare",
+    "detector": "lof",
+    "split_mode": "random",
+    "noise": 0.25,
+    "threshold_quantile": 0.1,
+    "calibrated_val_fpr": 0.027888446215139442,
+    "primary_t": 3,
+    "train_instances": 3516,
+    "val_instances": 753,
+    "benign_test_instances": 754,
+    "anomaly_instances": 3176,
+    "positive_instances": 43
+  },
+  "coverage": {
+    "train_paths": 13516,
+    "val_paths": 2739,
+    "test_benign_paths": 2806,
+    "anomaly_paths": 17132,
+    "train_instances_with_paths": 3516,
+    "test_benign_with_paths": 754,
+    "anomaly_with_paths": 3176
+  },
+  "lof_threshold": 0.5,
+  "path_level": {
+    "tp": 473,
+    "fp": 7613,
+    "tn": 11710,
+    "fn": 142,
+    "precision": 0.058496166213208016,
+    "recall": 0.7691056910569106,
+    "f1": 0.10872313527180784,
+    "fpr": 0.39398644102882574,
+    "support": 19938
+  },
+  "path_level_balanced": {
+    "tp": 473,
+    "fp": 229,
+    "tn": 386,
+    "fn": 142,
+    "precision": 0.6737891737891738,
+    "recall": 0.7691056910569106,
+    "f1": 0.718299164768413,
+    "fpr": 0.3723577235772358,
+    "support": 1230
+  },
+  "path_ranking": {
+    "auroc": 0.702358830140079,
+    "auprc": 0.05953523755386739
+  },
+  "instance_ranking": {
+    "provdetector": {
+      "auroc": 0.9072639268641446,
+      "auprc": 0.059351675569803274
+    },
+    "whitelist": {
+      "auroc": 0.9030100334448161,
+      "auprc": 0.053952321204516936
+    },
+    "anomaly_score": {
+      "auroc": 0.913160146223847,
+      "auprc": 0.10996203099958442
+    },
+    "frequency_score": {
+      "auroc": 0.9497609802502079,
+      "auprc": 0.11401868675559337
+    }
+  },
+  "instance_level_t_sweep": {
+    "1": {
+      "tp": 43,
+      "fp": 718,
+      "tn": 3169,
+      "fn": 0,
+      "precision": 0.056504599211563734,
+      "recall": 1.0,
+      "f1": 0.10696517412935323,
+      "fpr": 0.18471829174170312,
+      "support": 3930
+    },
+    "2": {
+      "tp": 43,
+      "fp": 695,
+      "tn": 3192,
+      "fn": 0,
+      "precision": 0.058265582655826556,
+      "recall": 1.0,
+      "f1": 0.11011523687580026,
+      "fpr": 0.1788011319783895,
+      "support": 3930
+    },
+    "3": {
+      "tp": 43,
+      "fp": 642,
+      "tn": 3245,
+      "fn": 0,
+      "precision": 0.06277372262773723,
+      "recall": 1.0,
+      "f1": 0.11813186813186814,
+      "fpr": 0.16516593774118857,
+      "support": 3930
+    },
+    "4": {
+      "tp": 43,
+      "fp": 624,
+      "tn": 3263,
+      "fn": 0,
+      "precision": 0.06446776611694154,
+      "recall": 1.0,
+      "f1": 0.1211267605633803,
+      "fpr": 0.1605351170568562,
+      "support": 3930
+    },
+    "5": {
+      "tp": 35,
+      "fp": 470,
+      "tn": 3417,
+      "fn": 8,
+      "precision": 0.06930693069306931,
+      "recall": 0.813953488372093,
+      "f1": 0.1277372262773723,
+      "fpr": 0.12091587342423463,
+      "support": 3930
+    }
+  },
+  "methods": {
+    "provdetector": {
+      "full": {
+        "tp": 43,
+        "fp": 642,
+        "tn": 3245,
+        "fn": 0,
+        "precision": 0.06277372262773723,
+        "recall": 1.0,
+        "f1": 0.11813186813186814,
+        "fpr": 0.16516593774118857,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 43,
+        "fp": 8,
+        "tn": 35,
+        "fn": 0,
+        "precision": 0.8431372549019608,
+        "recall": 1.0,
+        "f1": 0.9148936170212766,
+        "fpr": 0.18604651162790697,
+        "support": 86
+      }
+    },
+    "rule_heuristic": {
+      "full": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 3887,
+        "fn": 43,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "fpr": 0.0,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 43,
+        "fn": 43,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "fpr": 0.0,
+        "support": 86
+      }
+    },
+    "whitelist": {
+      "full": {
+        "tp": 43,
+        "fp": 756,
+        "tn": 3131,
+        "fn": 0,
+        "precision": 0.05381727158948686,
+        "recall": 1.0,
+        "f1": 0.10213776722090262,
+        "fpr": 0.19449446874196039,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 43,
+        "fp": 13,
+        "tn": 30,
+        "fn": 0,
+        "precision": 0.7678571428571429,
+        "recall": 1.0,
+        "f1": 0.8686868686868687,
+        "fpr": 0.3023255813953488,
+        "support": 86
+      }
+    },
+    "anomaly_score": {
+      "full": {
+        "tp": 43,
+        "fp": 765,
+        "tn": 3122,
+        "fn": 0,
+        "precision": 0.053217821782178217,
+        "recall": 1.0,
+        "f1": 0.10105757931844889,
+        "fpr": 0.1968098790841266,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 43,
+        "fp": 13,
+        "tn": 30,
+        "fn": 0,
+        "precision": 0.7678571428571429,
+        "recall": 1.0,
+        "f1": 0.8686868686868687,
+        "fpr": 0.3023255813953488,
+        "support": 86
+      }
+    },
+    "frequency_score": {
+      "full": {
+        "tp": 43,
+        "fp": 756,
+        "tn": 3131,
+        "fn": 0,
+        "precision": 0.05381727158948686,
+        "recall": 1.0,
+        "f1": 0.10213776722090262,
+        "fpr": 0.19449446874196039,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 43,
+        "fp": 6,
+        "tn": 37,
+        "fn": 0,
+        "precision": 0.8775510204081632,
+        "recall": 1.0,
+        "f1": 0.9347826086956522,
+        "fpr": 0.13953488372093023,
+        "support": 86
+      }
+    }
+  },
+  "whitelist_cutoff": 0.03,
+  "whitelist_threshold": 0.07587241379309963,
+  "whitelist_val_fpr": 0.05046480743691899,
+  "whitelist_calibration": {
+    "support_cutoff": 0.03,
+    "val_fpr": 0.05046480743691899
+  },
+  "anomaly_score_threshold": -14.629784604975857,
+  "runtime_seconds": 165.62250511899947,
+  "frequency_threshold": 0.9155739904941014,
+  "frequency_val_fpr": 0.05046480743691899
+}

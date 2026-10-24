@@ -1,0 +1,265 @@
+{
+  "config": {
+    "train_dataset": "WS12",
+    "test_dataset": "WS12",
+    "seed": 20261025,
+    "k": 20,
+    "max_len": 5,
+    "path_mode": "rare",
+    "detector": "lof",
+    "split_mode": "random",
+    "noise": 0.5,
+    "threshold_quantile": 0.1,
+    "calibrated_val_fpr": 0.027888446215139442,
+    "primary_t": 3,
+    "train_instances": 3516,
+    "val_instances": 753,
+    "benign_test_instances": 754,
+    "anomaly_instances": 3176,
+    "positive_instances": 43
+  },
+  "coverage": {
+    "train_paths": 13516,
+    "val_paths": 2739,
+    "test_benign_paths": 2806,
+    "anomaly_paths": 17132,
+    "train_instances_with_paths": 3516,
+    "test_benign_with_paths": 754,
+    "anomaly_with_paths": 3176
+  },
+  "lof_threshold": 0.5,
+  "path_level": {
+    "tp": 335,
+    "fp": 7597,
+    "tn": 11726,
+    "fn": 280,
+    "precision": 0.04223398890569844,
+    "recall": 0.5447154471544715,
+    "f1": 0.0783900783900784,
+    "fpr": 0.39315841225482584,
+    "support": 19938
+  },
+  "path_level_balanced": {
+    "tp": 335,
+    "fp": 228,
+    "tn": 387,
+    "fn": 280,
+    "precision": 0.5950266429840142,
+    "recall": 0.5447154471544715,
+    "f1": 0.568760611205433,
+    "fpr": 0.37073170731707317,
+    "support": 1230
+  },
+  "path_ranking": {
+    "auroc": 0.5822120654058582,
+    "auprc": 0.03816333771603718
+  },
+  "instance_ranking": {
+    "provdetector": {
+      "auroc": 0.8896979197204755,
+      "auprc": 0.05035620233915456
+    },
+    "whitelist": {
+      "auroc": 0.9030100334448161,
+      "auprc": 0.053952321204516936
+    },
+    "anomaly_score": {
+      "auroc": 0.9128221082798357,
+      "auprc": 0.10374437321607358
+    },
+    "frequency_score": {
+      "auroc": 0.9497609802502079,
+      "auprc": 0.11401868675559337
+    }
+  },
+  "instance_level_t_sweep": {
+    "1": {
+      "tp": 43,
+      "fp": 718,
+      "tn": 3169,
+      "fn": 0,
+      "precision": 0.056504599211563734,
+      "recall": 1.0,
+      "f1": 0.10696517412935323,
+      "fpr": 0.18471829174170312,
+      "support": 3930
+    },
+    "2": {
+      "tp": 43,
+      "fp": 695,
+      "tn": 3192,
+      "fn": 0,
+      "precision": 0.058265582655826556,
+      "recall": 1.0,
+      "f1": 0.11011523687580026,
+      "fpr": 0.1788011319783895,
+      "support": 3930
+    },
+    "3": {
+      "tp": 34,
+      "fp": 642,
+      "tn": 3245,
+      "fn": 9,
+      "precision": 0.05029585798816568,
+      "recall": 0.7906976744186046,
+      "f1": 0.09457579972183587,
+      "fpr": 0.16516593774118857,
+      "support": 3930
+    },
+    "4": {
+      "tp": 33,
+      "fp": 624,
+      "tn": 3263,
+      "fn": 10,
+      "precision": 0.0502283105022831,
+      "recall": 0.7674418604651163,
+      "f1": 0.09428571428571428,
+      "fpr": 0.1605351170568562,
+      "support": 3930
+    },
+    "5": {
+      "tp": 32,
+      "fp": 469,
+      "tn": 3418,
+      "fn": 11,
+      "precision": 0.06387225548902195,
+      "recall": 0.7441860465116279,
+      "f1": 0.11764705882352941,
+      "fpr": 0.12065860560843839,
+      "support": 3930
+    }
+  },
+  "methods": {
+    "provdetector": {
+      "full": {
+        "tp": 34,
+        "fp": 642,
+        "tn": 3245,
+        "fn": 9,
+        "precision": 0.05029585798816568,
+        "recall": 0.7906976744186046,
+        "f1": 0.09457579972183587,
+        "fpr": 0.16516593774118857,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 34,
+        "fp": 8,
+        "tn": 35,
+        "fn": 9,
+        "precision": 0.8095238095238095,
+        "recall": 0.7906976744186046,
+        "f1": 0.8,
+        "fpr": 0.18604651162790697,
+        "support": 86
+      }
+    },
+    "rule_heuristic": {
+      "full": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 3887,
+        "fn": 43,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "fpr": 0.0,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 43,
+        "fn": 43,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "fpr": 0.0,
+        "support": 86
+      }
+    },
+    "whitelist": {
+      "full": {
+        "tp": 43,
+        "fp": 756,
+        "tn": 3131,
+        "fn": 0,
+        "precision": 0.05381727158948686,
+        "recall": 1.0,
+        "f1": 0.10213776722090262,
+        "fpr": 0.19449446874196039,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 43,
+        "fp": 13,
+        "tn": 30,
+        "fn": 0,
+        "precision": 0.7678571428571429,
+        "recall": 1.0,
+        "f1": 0.8686868686868687,
+        "fpr": 0.3023255813953488,
+        "support": 86
+      }
+    },
+    "anomaly_score": {
+      "full": {
+        "tp": 43,
+        "fp": 765,
+        "tn": 3122,
+        "fn": 0,
+        "precision": 0.053217821782178217,
+        "recall": 1.0,
+        "f1": 0.10105757931844889,
+        "fpr": 0.1968098790841266,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 43,
+        "fp": 13,
+        "tn": 30,
+        "fn": 0,
+        "precision": 0.7678571428571429,
+        "recall": 1.0,
+        "f1": 0.8686868686868687,
+        "fpr": 0.3023255813953488,
+        "support": 86
+      }
+    },
+    "frequency_score": {
+      "full": {
+        "tp": 43,
+        "fp": 756,
+        "tn": 3131,
+        "fn": 0,
+        "precision": 0.05381727158948686,
+        "recall": 1.0,
+        "f1": 0.10213776722090262,
+        "fpr": 0.19449446874196039,
+        "support": 3930
+      },
+      "balanced": {
+        "tp": 43,
+        "fp": 6,
+        "tn": 37,
+        "fn": 0,
+        "precision": 0.8775510204081632,
+        "recall": 1.0,
+        "f1": 0.9347826086956522,
+        "fpr": 0.13953488372093023,
+        "support": 86
+      }
+    }
+  },
+  "whitelist_cutoff": 0.03,
+  "whitelist_threshold": 0.07587241379309963,
+  "whitelist_val_fpr": 0.05046480743691899,
+  "whitelist_calibration": {
+    "support_cutoff": 0.03,
+    "val_fpr": 0.05046480743691899
+  },
+  "anomaly_score_threshold": -14.629784604975857,
+  "runtime_seconds": 167.8528613340004,
+  "frequency_threshold": 0.9155739904941014,
+  "frequency_val_fpr": 0.05046480743691899
+}

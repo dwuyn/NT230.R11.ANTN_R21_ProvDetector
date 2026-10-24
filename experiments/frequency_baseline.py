@@ -53,7 +53,7 @@ def main() -> int:
         test_anomaly = Trace.load("data/clean", test_dataset, Scenario.ANOMALY)
         rng = np.random.default_rng(seed)
         train_ids = [i for i in train_trace.instance_ids if len(train_trace.own_events(i).get("ts", []))]
-        split = _split(train_ids, rng, 0.7, 0.15)
+        split = _split(train_ids, rng, 0.7, 0.15, trace=train_trace, mode=cfg.get("split_mode", "random"))
         db = FrequencyDB.build(train_trace, split["train"])
 
         val_scores = instance_scores(train_trace, split["val"], db)
