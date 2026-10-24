@@ -12,7 +12,7 @@ NDSS 2020 (DOI 10.14722/ndss.2020.24167).
 
 - [x] T00 môi trường Python 3.12 + pin dependency (`requirements.txt`, `environment.lock`)
 - [x] T03 tải + checksum PKU-ASAL W10/WS12, ProvNinja sample; data card
-- [x] T04 parser ETW → schema provenance, có test
+- [x] T04 parser ETW + ProvNinja paragraph → schema provenance, có test
 - [x] T05 graph theo process instance + hình mẫu
 - [x] T06 regularity score + top-K path hiếm
 - [x] T07 baseline rule / whitelist / anomaly-score
@@ -106,7 +106,8 @@ Ubuntu đã tải nhưng chưa parse; không có claim Linux.
 - `docs/threat-model.md`, `docs/label-book.md` — hạng mục 1.
 - `docs/data-card.md`, `docs/checksums.md` — hạng mục 3.
 - `experiments/protocol.md` — protocol khóa.
-- `docs/limitations.md`, `experiments/results/error-analysis-*.md` — hạng mục 4 (cập nhật sau run).
+- `docs/limitations.md`, `docs/error-analysis.md`, `experiments/results/error-analysis-*.md` — hạng mục 4.
+- `experiments/results/main-table.md`, `ablation.md`, `confusion-matrices.md`, `path-sanity.md` — bảng kết quả.
 - `docs/venue-note.md` — NDSS 2020 vs đề "NDSS 2025".
 
 ## An toàn
