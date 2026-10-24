@@ -1,0 +1,23 @@
+# agent tooling
+skills-lock.json
+.claude/
+.agents/
+
+# local course material (class-wide topic spreadsheet, not a project artifact)
+docs/source/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# datasets & derived artifacts
+data/raw/
+data/raw-provninja/
+data/clean/
+data/lab/
+models/
+checkpoints/
+*.log
