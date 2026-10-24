@@ -16,8 +16,13 @@ venv/
 # datasets & derived artifacts
 data/raw/
 data/raw-provninja/
+data/raw-provninja/
 data/clean/
 data/lab/
 models/
 checkpoints/
 *.log
+
+# experiment caches / model checkpoints
+experiments/results/cache/
+*.pkl

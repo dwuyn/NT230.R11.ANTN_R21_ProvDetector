@@ -1,0 +1,21 @@
+{
+  "threshold": 0.0689856841739223,
+  "train": 10955,
+  "val": 2347,
+  "test": 2348,
+  "benign_test": {
+    "paths": 2348,
+    "flagged": 123,
+    "flag_rate": 0.05238500851788756
+  },
+  "anomaly": {
+    "paths": 266,
+    "flagged": 58,
+    "flag_rate": 0.21804511278195488
+  },
+  "gadget": {
+    "paths": 268,
+    "flagged": 260,
+    "flag_rate": 0.9701492537313433
+  }
+}

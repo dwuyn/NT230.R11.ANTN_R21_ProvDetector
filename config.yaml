@@ -1,0 +1,30 @@
+# R21 ProvDetector reproduction configuration
+seed: 20261025
+paths:
+  raw_pku: data/raw/pku
+  raw_provninja: data/raw-provninja
+  clean: data/clean
+  results: experiments/results
+  figs: experiments/figs
+  models: models
+pku:
+  datasets: [W10, WS12, Ubuntu]
+  # Instance = one (host, process-start event) rooted subgraph window.
+  window_minutes: 30
+  max_path_length: 5
+params:
+  top_k: 20
+  doc2vec:
+    vector_size: 100
+    dm: 1
+    epochs: 100
+    window: 3
+    min_count: 1
+    workers: 1
+  lof:
+    n_neighbors: 20
+    contamination: 0.04
+  threshold_t: 3
+split:
+  train_ratio: 0.7
+  unit: instance
